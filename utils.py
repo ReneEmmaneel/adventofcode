@@ -1,5 +1,6 @@
 import typing
 import re
+import subprocess 
 
 def lmap(func, *iterables):
     return list(map(func, *iterables))
@@ -13,3 +14,19 @@ def digits(s: str) -> typing.List[int]:
 
 def strs(s: str) -> typing.List[str]:
     return s.strip().split(' ')
+
+def inter(a, b):
+    #a and b can be lists or sets
+    return a.intersection(b)
+
+def ans(i: int, s: str, copy: bool):
+    print(f'Answer to {s}: {i}')
+    if copy:
+        subprocess.run(f"echo {i} | clip", shell=True)
+
+def chunks(lst, n):
+    """returns successive n-sized chunks from lst."""
+    result = []
+    for i in range(0, len(lst), n):
+        result.append(lst[i:i + n])
+    return result
