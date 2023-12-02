@@ -39,32 +39,26 @@ def q(file):
             if (x == 0 or y == 0 or x == len(grid) -1 or y == len(grid) - 1):
                 tot += 1
                 continue
-            a = int(grid[x][y] > cmax(grid[x][:y]) or grid[x][y] > cmax(grid[x][y+1:]) or grid[x][y] > cmax([a[y] for a in grid[:x]]) or grid[x][y] > cmax([a[y] for a in grid[x+1:]]))
-            tot += a
-            # print(a, end='')
+            #q1:
+            tot += int(grid[x][y] > cmax(grid[x][:y]) or grid[x][y] > cmax(grid[x][y+1:]) or grid[x][y] > cmax([a[y] for a in grid[:x]]) or grid[x][y] > cmax([a[y] for a in grid[x+1:]]))
 
+            #q2:
             curr = grid[x][y]
-            baba = scenic(rev(grid[x][:y]), curr) * scenic(grid[x][y+1:], curr) * scenic(rev([a[y] for a in grid[:x]]), curr) * scenic([a[y] for a in grid[x+1:]], curr)
+            scenic_score = scenic(rev(grid[x][:y]), curr) * scenic(grid[x][y+1:], curr) * scenic(rev([a[y] for a in grid[:x]]), curr) * scenic([a[y] for a in grid[x+1:]], curr)
             
-            
-            
-            if baba > max:
-                print('')
-                print(x,y)
-                print(rev(grid[x][:y]), x,y)
+            scenic_score = max(curr, scenic_score)
 
-                print(scenic(rev(grid[x][:y]), curr), scenic(grid[x][y+1:], curr), scenic(rev([a[y] for a in grid[:x]]), curr) , scenic([a[y] for a in grid[x+1:]], curr))
-
-                print('new max:', baba)
-                max = baba
-
-        # print()
-
-    print(max)
-    return tot
+    return tot, scenic_score
 
 if __name__ == "__main__":
+    print('Question 1:')
     file = 'test.txt'
-    ans(q(file), 'test', copy=False)
+    ans(q(file)[0], 'test', copy=False)
     file = 'input.txt'
-    ans(q(file), 'input', copy=True)
+    ans(q(file)[0], 'input', copy=True)
+
+    print('Question 2:')
+    file = 'test.txt'
+    ans(q(file)[1], 'test', copy=False)
+    file = 'input.txt'
+    ans(q(file)[1], 'input', copy=True)
