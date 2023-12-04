@@ -1,6 +1,7 @@
 import typing
 import re
 import subprocess 
+from functools import reduce
 
 def lmap(func, *iterables):
     return list(map(func, *iterables))
@@ -37,3 +38,6 @@ dirs = {
     'L': [0,-1],
     'D': [-1,0]
 }
+
+def product(lst):
+    return reduce(lambda x,y: x*y, lst)
