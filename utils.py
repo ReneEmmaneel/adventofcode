@@ -41,3 +41,13 @@ dirs = {
 
 def product(lst):
     return reduce(lambda x,y: x*y, lst)
+
+def flatten(l):
+    return list(flatten_yield(l))
+
+def flatten_yield(l):
+    for item in l:
+        try:
+            yield from flatten(item)
+        except TypeError:
+            yield item
