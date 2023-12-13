@@ -3,6 +3,7 @@
 #Takes half a minute, function is called 776k times
 #Still very dumb solution: should have used indices of some sort as keys instead of the entire list
 #Also had to turn the list into string to make it hashable... which might have been a hint that I shouldnt have done it that way
+#Actually disregard that last line, can turn it into a tuple and reduce the time to 1.7 seconds
 
 import sys
 sys.path.insert(0, '../..')
@@ -19,8 +20,8 @@ import ast
 
 @functools.cache
 def check(springs, nums):
-    springs = ast.literal_eval(springs)
-    nums = ast.literal_eval(nums)
+    springs = list(springs)
+    nums = list(nums)
     
     result = 0
     if len(springs) == 0:
@@ -35,9 +36,9 @@ def check(springs, nums):
             result = 1
     else:
         if springs[0] == 0:
-            result = check(str([1] + springs[1:]), str(nums)) + check(str(springs[1:]), str(nums))
+            result = check(tuple([1] + springs[1:]), tuple(nums)) + check(tuple(springs[1:]), tuple(nums))
         elif springs[0] == -1:
-            result = check(str(springs[1:]), str(nums))
+            result = check(tuple(springs[1:]), tuple(nums))
         elif springs[0] == 1:
             end = True
             for i, spring in enumerate(springs):
@@ -45,7 +46,7 @@ def check(springs, nums):
                     if i == nums[0]:
                         #success:
                         # print('yeah', i, spring, springs, springs[i:])
-                        result = check(str(springs[i:]), str(nums[1:]))
+                        result = check(tuple(springs[i:]), tuple(nums[1:]))
                     else:
                         result = 0
                     end = False
@@ -53,13 +54,13 @@ def check(springs, nums):
                 elif spring == 0:
                     if i < nums[0]:
                         try:
-                            result = check(str([1] + springs[i+1:]), str([nums[0] - i] + nums[1:]))
+                            result = check(tuple([1] + springs[i+1:]), tuple([nums[0] - i] + nums[1:]))
                         except:
                             result = 0
                     elif i == nums[0]:
                         #success:
                         # print('nah', i, spring, springs, springs[i:], [-1] + springs[i+1:])
-                        result = check(str([-1] + springs[i+1:]), str(nums[1:]))
+                        result = check(tuple([-1] + springs[i+1:]), tuple(nums[1:]))
                     else:
                         result = 0
                     end = False
@@ -88,7 +89,7 @@ def q(file, mult=1, verbose=False):
         nums = ints(right)
         springs = [-1 if x == '.' else 0 if x == '?' else 1 for x in list(left)]
 
-        result = check(str(springs), str(nums))
+        result = check(tuple(springs), tuple(nums))
         tot += result
         # print(j, result)
 
